@@ -1,0 +1,59 @@
+#version=RHEL7
+# System authorization information
+auth --enableshadow --passalgo=sha512
+
+# Use CDROM installation media
+cdrom
+
+# Use graphical install
+graphical
+
+# Run the Setup Agent on first boot
+firstboot --enable
+ignoredisk --only-use=sda
+
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+
+# System language
+lang en_US.UTF-8
+
+# Network information
+network  --bootproto=dhcp --device=enp0s3 --ipv6=auto --activate
+network  --hostname=vagrant.vagrantup.com
+
+# Root password
+rootpw --iscrypted $6$HAVEpMUe.LJdMf38$OGc82aGA/rOUNP0RSFiBAu4tuC.rX5jSsvQVD74jbWeAyBuenh3FHy1RBKChCZAaThsaV0i4OljVMWiny7/.Z0
+
+# System timezone
+timezone America/New_York --isUtc
+user --name=vagrant --gecos="vagrant"
+
+# Partition clearing information
+clearpart --all --initlabel 
+
+# System bootloader configuration
+# autopart --type=lvm
+bootloader --location=mbr --boot-drive=sda
+part /boot --fstype="xfs" --onpart=sda1
+part pv.17 --fstype="lvmpv" --noformat --onpart=sda2
+volgroup centos --noformat pv.17
+logvol swap --fstype="swap" --name=swap --vgname=centos
+logvol / --fstype="xfs" --name=root --vgname=centos
+
+%packages
+@core
+rsync
+net-tools
+screen
+
+%end
+
+%addon com_redhat_kdump --disable --reserve-mb='auto'
+
+%end
+%post --nochroot
+%end
+
+%post
+%end
