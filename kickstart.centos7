@@ -1,4 +1,5 @@
 #version=RHEL7
+# Vagrant box for CentOS 7
 # System authorization information
 auth --enableshadow --passalgo=sha512
 
@@ -25,6 +26,9 @@ network  --hostname=vagrant.vagrantup.com
 # Root password
 rootpw --iscrypted $6$HAVEpMUe.LJdMf38$OGc82aGA/rOUNP0RSFiBAu4tuC.rX5jSsvQVD74jbWeAyBuenh3FHy1RBKChCZAaThsaV0i4OljVMWiny7/.Z0
 
+# Vagrant account
+user --name=vagrant --groups=wheel --password=vagrant
+
 # System timezone
 timezone America/New_York --isUtc
 user --name=vagrant --gecos="vagrant"
@@ -37,12 +41,13 @@ clearpart --all --initlabel
 bootloader --location=mbr --boot-drive=sda
 part /boot --fstype="xfs" --onpart=sda1
 part pv.17 --fstype="lvmpv" --noformat --onpart=sda2
-volgroup centos --noformat pv.17
-logvol swap --fstype="swap" --name=swap --vgname=centos
-logvol / --fstype="xfs" --name=root --vgname=centos
+volgroup vg01 --noformat pv.17
+logvol swap --fstype="swap" --name=swap --vgname=vg01
+logvol / --fstype="xfs" --name=root --vgname=vg01
 
 %packages
 @core
+firewalld
 rsync
 net-tools
 screen
@@ -56,4 +61,54 @@ screen
 %end
 
 %post
+%end
+#Services
+firewall --disabled
+authconfig --enableshadow --passalgo=sha512
+selinux --disabled
+
+#Clear existing partitions
+zerombr
+clearpart --all
+
+#Partition Information
+part /boot --fstype=ext4 --size=512
+part pv.01 --grow --size=1
+volgroup vg01 --pesize=4096 pv.01
+logvol swap --name=lv_swap --vgname=vg01 --size=1024
+logvol / --fstype=ext4 --name=lv_root --vgname=vg01 --grow --size=1
+bootloader --location=mbr --append="crashkernel=auto rhgb quiet"
+
+#Reboot after completion
+reboot
+
+%packages --nobase
+@core
+%end
+
+# Download default vagrant account "insecure key"
+# Set up the wheel group to run commands w/out a password
+%post
+/usr/bin/yum -y install sudo
+/bin/cat << EOF > /etc/sudoers.d/wheel
+Defaults:%wheel env_keep += "SSH_AUTH_SOCK"
+Defaults:%wheel !requiretty
+%wheel ALL=(ALL) NOPASSWD: ALL
+EOF
+/bin/chmod 0440 /etc/sudoers.d/wheel
+/bin/mkdir /home/vagrant/.ssh
+/bin/chmod 700 /home/vagrant/.ssh
+/usr/bin/curl -L -o /home/vagrant/.ssh/id_rsa https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant
+/usr/bin/curl -L -o /home/vagrant/.ssh/authorized_keys https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub
+/bin/chown -R vagrant:vagrant /home/vagrant/.ssh
+/bin/chmod 0400 /home/vagrant/.ssh/*
+/bin/echo 'UseDNS no' >> /etc/ssh/sshd_config
+/bin/echo '127.0.0.1   vagrant-centos-6.vagrantup.com' >> /etc/hosts
+/usr/bin/yum -y clean all
+/sbin/swapoff -a
+/sbin/mkswap /dev/mapper/vg01-lv_swap
+/bin/dd if=/dev/zero of=/boot/EMPTY bs=1M
+/bin/rm -f /boot/EMPTY
+/bin/dd if=/dev/zero of=/EMPTY bs=1M
+/bin/rm -f /EMPTY
 %end

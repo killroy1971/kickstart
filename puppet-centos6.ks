@@ -1,5 +1,5 @@
 install
-url --url http://trantor.gshome.lan/repo/CentOS-base/
+url --url http://monolith/netboot/centos6/
 lang en_US.UTF-8
 keyboard us
 timezone --utc America/New_York
@@ -15,22 +15,21 @@ zerombr
 clearpart --all --initlabel --drives=sda
 part /boot --fstype=ext4 --size=200
 part pv.1 --grow --size=1
-volgroup vg1 --pesize=4096 pv.1
+volgroup vg01 --pesize=4096 pv.1
 
-logvol / --fstype=ext4 --name=lv001 --vgname=vg1 --size=6000
-logvol /var --fstype=ext4 --name=lv002 --vgname=vg1 --grow --size=1
-logvol swap --name=lv003 --vgname=vg1 --size=2048
+logvol / --fstype=ext4 --name=lv001 --vgname=vg01 --size=6000
+logvol /var --fstype=ext4 --name=lv002 --vgname=vg01 --grow --size=1
+logvol swap --name=lv003 --vgname=vg01 --size=2048
 # END of Disk Partitioning
 
 # Make sure we reboot into the new system when we are finished
 reboot
 
 # Repositories
-repo --name=CentOS-Base --baseurl=http://trantor.gshome.lan/repo/CentOS-base/
-repo --name=CentOS-Updates --baseurl=http://trantor.gshome.lan/repo/CentOS-updates/
-repo --name=EPEL --baseurl=http://trantor.gshome.lan/repo/epel-repo/
-repo --name=PuppetLabs-Products --baseurl=http://trantor.gshome.lan/repo/puppetlabs-products/
-repo --name=PuppetLabs-Products --baseurl=http://trantor.gshome.lan/repo/puppetlabs-deps/
+repo --name=CentOS-Base --baseurl=http://monolith/repo/centos6/
+repo --name=EPEL --baseurl=http://monolith/repo/epel-repo/
+repo --name=PuppetLabs-Products --baseurl=http://monolith/repo/puppetlabs-products/
+repo --name=PuppetLabs-Products --baseurl=http://monolith/repo/puppetlabs-deps/
 
 # Package Selection
 %packages --nobase --excludedocs

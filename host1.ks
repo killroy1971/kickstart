@@ -40,9 +40,9 @@ clearpart --all --initlabel
 bootloader --location=mbr --boot-drive=vda
 part /boot --fstype="xfs" --onpart=vda1
 part pv.17 --fstype="lvmpv" --noformat --onpart=vda2
-volgroup centos pv.17
-logvol swap --fstype="swap" --name=swap --vgname=centos
-logvol / --fstype="xfs" --name=root --vgname=centos
+volgroup vg01 pv.17
+logvol swap --fstype="swap" --name=swap --vgname=vg01
+logvol / --fstype="xfs" --name=root --vgname=vg01
 
 %packages
 @core

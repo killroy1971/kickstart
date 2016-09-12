@@ -1,0 +1,106 @@
+First, set up your yum repositories, including epel so we can install puppet
+
+Install the following packages:
+yum install tftp-server syslinux
+
+===================================
+Working tftp confitguration:
+/etc/xinitd.d/tftp
+
+service tftp
+{
+
+   socket_type       =  dgram
+   protocol              =  udp
+   wait                     =  yes
+   user                    =   root
+   server                 =   -s /var/lib/tftpboot
+
+}
+
+===================================
+/var/lib/tftpboot contents:
+centos/x86_64/
+   imitrd.img  vmlinuz   <== from /srv/repo/CentOS/6/x86_64/images/
+pxelinux.cfg/
+   default
+menu.c32  pxelinux.0   < == from /usr/share/syslinux
+
+===================================
+File default conents:
+DEFAULT menu.c32
+PROMPT 0
+TIMEOUT 10
+MENU TITLE PXE Network Boot
+
+LABEL install_64bit
+    MENU LABEL ^CentOS 6.5 (64-bit) Install
+    KERNEL centos/x86_64/vmliuz
+    APPEND initrd=centos/x86_64/initrd.img linux ks=http://192.168.100.2/ks/b64.ks
+
+
+===================================
+install
+url --url http://192.168.100.2/centos/6/os/x86_64
+lang en_US.UTF-8
+keyboard us
+timezone --utc America/New_York
+network --noipv6 --onboot=yes --bootproto dhcp
+authconfig --enableshadow --enablemd5
+rootpw --iscrypted $6$4/5AhsfVkVMRi8fg$fihfu2ZM7IXgC/6l6DW.NT0Gn4XZqNWbAtLiuJujskB0Ckcgjobbt.TVFzs4x46ZgE7ob26jQ73Kzeoz/.lKz/
+firewall --enabled --port 22:tcp
+firewall --enabled --port 80:tcp
+selinux --permissive
+bootloader --location=mbr --driveorder=sda --append="crashkernel=auth rhgb"
+repo --name="centos" --baseurl=http://puppet.learn.net/centos/$releasever/os/$basearch/ --cost=100
+repo --name="epel" --baseurl=http://puppet.learn.net/epel/6/$basearch --cost=100
+
+# Disk Partitioning
+# Use this line for physical boxes
+#clearpart --all --initlabel --drives=sda
+# Use this line for virtual drives
+clearpart --all --initlabel --drives=vda
+part /boot --fstype=ext4 --size=200
+ Creates 40 GB physical volume pv1 and a 40GB volume group 1
+part pv.1 --grow --size=40960
+volgroup vg1 --pesize=40960 pv.1
+
+# Create 10 GB root, 10 GB var, 2 GB swap, and a 18 GB Home
+logvol /       --fstype=ext4 --name=lv001 --vgname=vg1 --size=10240
+logvol /var    --fstype=ext4 --name=lv002 --vgname=vg1 --size=10240
+logvol /home   --fstype=ext4 --name=lv002 --vgname=vg1 --size=1 --grow
+logvol swap    --fstype=ext4 --name=lv003 --vgname=vg1 --size=2048
+# END of Disk Partitioning
+
+# Make sure we reboot into the new system when we are finished
+reboot
+
+# Package Selection
+%packages --nobase --excludedocs
+@core
+@base
+-*firmware
+-iscsi*
+-fcoe*
+-b43-openfwwf
+kernel-firmware
+-efibootmgr
+wget
+sudo
+perl
+puppet
+
+%pre
+
+%post --log=/root/install-post.log
+(
+PATH=/bin:/sbin:/usr/sbin:/usr/sbin
+export PATH
+
+# PLACE YOUR POST DIRECTIVES HERE
+/usr/sbin/ntpdate ntp.learn.net
+echo "192.168.100.2 puppet" >> /etc/hosts
+
+) 2>&1 >/root/install-post-sh.log
+
+
