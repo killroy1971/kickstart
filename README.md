@@ -12,6 +12,7 @@ This repository contains sample kickstart scripts.
 * vagrant.centos7 - Creates a CENTOS 7 vagrant box target (works with Virtual Box and Packer)
 * ks.fedora24-svr - Creates a generic Fedora Server machine with nfs-utils, screen, zsh, 
   ksh, vim, and chrony
+* puppet-centos6.ks - Creates a basic CentOS 6 Puppet client server.
 
 
 ---

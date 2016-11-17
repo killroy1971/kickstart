@@ -1,10 +1,13 @@
+#Installs a generic CentOS 6 Puppet Client server
+#You'll have to modify the "post" items for your environment.
+#Installs git, puppet, factor, wget and sets the puppet client to boot with the OS.
+
 install
-url --url http://monolith/netboot/centos6/
 lang en_US.UTF-8
 keyboard us
 timezone --utc America/New_York
 network --noipv6 --onboot=yes --bootproto dhcp
-authconfig --enableshadow --enablemd5
+authconfig --enableshadow --enablesha512
 rootpw --iscrypted $6$wXOkwHHkI0aiJJro$mSzq4.uCS4iOhxHvkK5nK6zQ0ll2CCYSErE.vV1WKGFPU8e04L2C/KkV6pk4vJVGaNJgGHrmPy/J2n/DyQgBC1
 firewall --enabled --port 22:tcp
 selinux --permissive
@@ -25,12 +28,6 @@ logvol swap --name=lv003 --vgname=vg01 --size=2048
 # Make sure we reboot into the new system when we are finished
 reboot
 
-# Repositories
-repo --name=CentOS-Base --baseurl=http://monolith/repo/centos6/
-repo --name=EPEL --baseurl=http://monolith/repo/epel-repo/
-repo --name=PuppetLabs-Products --baseurl=http://monolith/repo/puppetlabs-products/
-repo --name=PuppetLabs-Products --baseurl=http://monolith/repo/puppetlabs-deps/
-
 # Package Selection
 %packages --nobase --excludedocs
 @core
@@ -44,8 +41,6 @@ wget
 sudo
 perl
 git
-puppet
-facter
 
 
 %pre
@@ -55,6 +50,10 @@ facter
 PATH=/bin:/sbin:/usr/bin:/usr/sbin
 export PATH
 
-# PLACE YOUR POST DIRECTIVES HERE
-) 2>&1 >/root/install-post-sh.log
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+
+yum -y install puppet factor 
+
+echo "<ip_addr> puppt.<domain-name>  puppet" >> /etc/hosts
+checkconfig puppet on
 
