@@ -1,4 +1,5 @@
 #version=RHEL7
+# Kickstart file to create a CentOS7 vagrant box target
 # System authorization information
 auth --enableshadow --passalgo=sha512
 
@@ -10,7 +11,7 @@ graphical
 
 # Run the Setup Agent on first boot
 firstboot --enable
-ignoredisk --only-use=vda
+ignoredisk --only-use=sda
 
 # Keyboard layouts
 keyboard --vckeymap=us --xlayouts='us'
@@ -20,13 +21,10 @@ lang en_US.UTF-8
 
 # Network information
 network  --bootproto=dhcp --device=enp0s3 --ipv6=auto --activate
-network  --hostname=host1.example.com
+network  --hostname=vagrant.vagrantup.com
 
 # Root password
 rootpw --iscrypted $6$HAVEpMUe.LJdMf38$OGc82aGA/rOUNP0RSFiBAu4tuC.rX5jSsvQVD74jbWeAyBuenh3FHy1RBKChCZAaThsaV0i4OljVMWiny7/.Z0
-
-# User account
-user --groups=wheel --name=glenn --password=$6$W09Bf9vw4tieKyW4$a2CFH/0gHxJ49VKuU9AnyaO7AWMX.eOxSWlbUTFHDtCeAecrLcn4LAV3h8SuzgPZiTF5EmPaeZihSQxs/1AuT0 --iscrypted --gecos="Glenn H. Snead"
 
 # System timezone
 timezone America/New_York --isUtc
@@ -37,12 +35,12 @@ clearpart --all --initlabel
 
 # System bootloader configuration
 # autopart --type=lvm
-bootloader --location=mbr --boot-drive=vda
-part /boot --fstype="xfs" --onpart=vda1
-part pv.17 --fstype="lvmpv" --noformat --onpart=vda2
-volgroup centos pv.17
-logvol swap --fstype="swap" --name=swap --vgname=centos
-logvol / --fstype="xfs" --name=root --vgname=centos
+bootloader --location=mbr --boot-drive=sda
+part /boot --fstype="xfs" --onpart=sda1
+part pv.17 --fstype="lvmpv" --noformat --onpart=sda2
+volgroup vg01 --noformat pv.17
+logvol swap --fstype="swap" --name=swap --vgname=vg01
+logvol / --fstype="xfs" --name=root --vgname=vg01
 
 %packages
 @core

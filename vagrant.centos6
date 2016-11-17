@@ -1,3 +1,4 @@
+#Kickstart script to create a CentOS6 vagrant box target
 install
 text
 cdrom
@@ -24,9 +25,9 @@ clearpart --all
 #Partition Information
 part /boot --fstype=ext4 --size=512
 part pv.01 --grow --size=1
-volgroup vg_vagrantcentos --pesize=4096 pv.01
-logvol swap --name=lv_swap --vgname=vg_vagrantcentos --size=1024
-logvol / --fstype=ext4 --name=lv_root --vgname=vg_vagrantcentos --grow --size=1
+volgroup vg01 --pesize=4096 pv.01
+logvol swap --name=lv_swap --vgname=vg01 --size=1024
+logvol / --fstype=ext4 --name=lv_root --vgname=vg01 --grow --size=1
 bootloader --location=mbr --append="crashkernel=auto rhgb quiet"
 
 #Reboot after completion
@@ -58,7 +59,7 @@ EOF
 /bin/echo '127.0.0.1   vagrant-centos-6.vagrantup.com' >> /etc/hosts
 /usr/bin/yum -y clean all
 /sbin/swapoff -a
-/sbin/mkswap /dev/mapper/vg_vagrantcentos-lv_swap
+/sbin/mkswap /dev/mapper/vg01-lv_swap
 /bin/dd if=/dev/zero of=/boot/EMPTY bs=1M
 /bin/rm -f /boot/EMPTY
 /bin/dd if=/dev/zero of=/EMPTY bs=1M
