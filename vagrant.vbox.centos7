@@ -96,4 +96,7 @@ sed -i -e 's/#UseDNS.*yes/UseDNS no/g' /etc/ssh/sshd_config
 #Update all installed packages -- not doing so tends to break VirtualBox Guest Additions Install
 yum -y update
 
+#Remove existing ssh host keys
+/bin/rm -f /etc/ssh/*key*
+
 %end
