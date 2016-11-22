@@ -70,7 +70,7 @@ echo 'vagrant:$6$er2KeeQRorDzsAJw$I0eTtueHyqQRMm1DRkhc7Jscw5cZ7rFs/ZwrlaJ54kEyD8
 #Set up vagrant ssh keys
 mkdir /home/vagrant/.ssh
 chown vagrant:vagrant -R /home/vagrant/.ssh
-chmod 0700 /etc/vagrant/.ssh
+chmod 0700 /home/vagrant/.ssh
 curl -k https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant > /home/vagrant/.ssh/id_rsa
 curl -k https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub > /home/vagrant/.ssh/id_rsa.pub
 chown vagrant:vagrant -R /home/vagrant/.ssh/*
