@@ -57,10 +57,9 @@ yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarc
 
 #Set up sudoers for vagrant and remove the NOPASSWD wheel entry
 #A security tradeoff I know, but ncessary for vagrant boxes.
-sed -i -e 's/^Defaults.*requiretty/#Defaults   requiretty/g' /etc/sudoers
 sed -i -e '/## Same thing without a password/d' /etc/sudoers
 sed -i -e '/#.*%wheel.*ALL=(ALL).*NOPASSWD:.*ALL/d' /etc/sudoers
-sed -i -e 's/#.*%wheel.*ALL=(ALL).*ALL/%wheel ALL=(ALL) ALL' /etc/sudoers
+sed -i -e 's/#.*%wheel.*ALL=(ALL).*ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 echo "%vagrant ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/vagrant
 chown root:root /etc/sudoers.d/vagrant
 chmod 0440 /etc/sudoers.d/vagrant
