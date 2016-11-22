@@ -1,0 +1,28 @@
+Creating Vagrant Boxes from Kickstart:
+To create a vagrant box, you'll first have to create a VirtualBox VM based on one of the vagrant kickstart files.
+* Create you VM image with at least an 8GB file.
+* Set up the initial boot sequence to perform a network boot against a "Bridged" nework adapter.
+* When you launch the VM for the first time, you'll be prompted for an ISO image.  Click "Cancel" to move past this as PXE and Kickstart will provide all that you need.
+
+These kickstart files will perform the following:
+* Install the target operating sytem.
+* Create the 'vagarant' user with the HashiCorp provided "insecure" ssh keys, which will be replaced every time a new 'vagarnt up <name>' is executed against the resulting vagarnt "box."  
+ Note: This is a good thing, as it elminates the possibility of dupliate SSH keys on every VM.
+* Add the EPEL repository and install the necessary packages to install Guest Additions.
+* Install a few packages you'd want anyway, so why wait?
+* Sets the root password.
+
+These kickstart files do not do the following:
+* Prevent SSH-based root logins.  If you're using Vagarant for anything beyond development...
+  1. You shouln't.  2. If you do, use your preferred config managment tool to lock down sshd.
+* Install VirtualBox Guest Additions.  
+  As this changes with the released Vitual Box releases, it makes more sense to install this 
+  after building the initial VM.
+* Install any middleware.  I try to keep this as generic as possible.
+* Enable a host-based firewall: iptables or firewalld.  This is for development.
+  If you need this, add the appropriate lines to the kickstart file.
+
+A few other things you'll want to do:
+1. Change the root password hash to one representing your organization's root password.
+2. Change the vagrant password hash to one representing a password you select for vagrant.
+
