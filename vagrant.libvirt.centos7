@@ -71,7 +71,7 @@ interface=`cat /tmp/interface`
 #Install additional packages
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 /usr/bin/yum -y installgroup compat-libraries
-/usr/bin/yum -y install opencryptoki crypto-utils screen openscap openscap-utils openscap-scanner mailx vim-enhanced rsync wget git bzip2 yum-utils qemu-guest-agent
+/usr/bin/yum -y install opencryptoki crypto-utils screen openscap openscap-utils openscap-scanner mailx vim-enhanced rsync wget git bzip2 yum-utils qemu-guest-agent nfs-utils
 
 #Configure sudoers file
 sed -i -e 's/^Defaults.*requiretty/#Defaults   requiretty/g' /etc/sudoers

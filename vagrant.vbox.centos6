@@ -53,7 +53,7 @@ reboot
 %post --log=/root/ks-post.log
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
 /usr/bin/yum -y groupinstall compat-libraries
-/usr/bin/yum -y install opencryptoki crypto-utils screen openscap openscap-utils openscap-scanner mailx vim-enhanced rsync wget git bzip2 yum-utils dkms kexec-tools
+/usr/bin/yum -y install opencryptoki crypto-utils screen openscap openscap-utils openscap-scanner mailx vim-enhanced rsync wget git bzip2 yum-utils dkms kexec-tools nfs-utils
 
 #Set up sudoers for vagrant and remove the NOPASSWD wheel entry
 #A security tradeoff I know, but ncessary for vagrant boxes.
