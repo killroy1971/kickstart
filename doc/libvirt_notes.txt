@@ -1,18 +1,26 @@
- virt-install --hvm --connect qemu:///system --network=bridge:br0 --pxe --vcpus=1 --os-type=linux --os-variant=rhel7 --graphics vnc,listen=0.0.0.0,password=I8Pass --disk pool=kvm_images,size=10 --name=CentOS7 --ram=1024
+First, create a thin provisioned qcow2 disk image:
+qemu-img create -f qcow2 <name>.qcow2 <size-in-GiB>
+Now, install from pxe / kickstart:
+virt-install --hvm --connect qemu:///system --network=bridge:br0 --pxe --vcpus=1 --os-type=linux --os-variant=rhel7 --graphics vnc,listen=0.0.0.0,password=I8Pass --disk <filename>.qcow2 --name=CentOS7 --ram=1024
+i#virt-install --hvm --connect qemu:///system --network=bridge:br0 --pxe --vcpus=1 --os-type=linux --os-variant=rhel7 --graphics vnc,listen=0.0.0.0,password=I8Pass --disk pool=default,size=10 --name=CentOS7 --ram=1024
 
-Destroy a VM -- Domain in Libvirt Terms
+Destroy a VM Part 1 -- Domain in Libvirt Terms
 virsh list << List running Domains
 virsh destroy <domain>
 virsh undefine <domain>
 
-Destory a VM's image
+Destory a VM Part 2 -- Remove the image
 virsh pool-list
-virsh vol-list <pool>
+virsh vol-list <pool> << Find the VM's volume file.
 virsh vol-destroy <volume> <pool>
 
 You'll need a VNC client on your host workstaion to monitor the kickstart process.
 If you choose to not run a VNC process, you'll be waiting a long time for the build process to complete.
 
 Be sure to define your desire VM pool before attempting to create a libvirt VM.
-In this example, I've named the desired pool kvm_images.
+In this example, I've named the desired pool default.
+
+I recommend setting up /var/lib/libvirt as the location for your default pool.  The Hashicorp provided VBox tempaltes assume you'll be using the pool name "default."
+
+If you're doing this, I assume you're able to set up an independent partition and map it to /var/lib/libvirt, then create the "defult" pool in /var/lib/libvirt/filesystems as a "dir" pool type.
 
