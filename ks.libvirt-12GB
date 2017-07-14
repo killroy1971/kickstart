@@ -40,7 +40,7 @@ firstboot --enable
 reboot
 
 #Network information
-network --bootproto=dhcp --device=$interface --ipv6=auto --activate
+network --bootproto=dhcp --ipv6=auto --activate
 
 # System bootloader configuration
 zerombr
@@ -61,12 +61,6 @@ logvol /var/log  --fstype="xfs" --size=500 --name=var_log --vgname=vg01
 logvol /opt  --fstype="xfs" --size=1536 --name=opt --vgname=vg01
 logvol /var/log/audit  --fstype="xfs" --size=256 --name=var_log_audit --vgname=vg01
 logvol /usr  --fstype="xfs" --size=3072 --name=usr --vgname=vg01
-
-%pre
-ip addr | grep -i broadcast | awk '{ print $2 }' > /tmp/interface
-sed -i 's/:/\ /g' /tmp/interface
-interface=`cat /tmp/interface`
-%end
 
 %packages
 @^minimal

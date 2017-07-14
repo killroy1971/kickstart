@@ -1,7 +1,7 @@
 # Use this kickstart file to create a 20 GB Centos 7 oVirt template.
 install
 text
-network --bootproto=dhcp --hostname=rhel7base --device=$interface --ipv6=auto --activate
+network --bootproto=dhcp --hostname=rhel7base --ipv6=auto --activate
 cdrom
 lang en_US.UTF-8
 keyboard us
@@ -55,12 +55,6 @@ parted
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'
 
-%end
-
-%pre
-ip addr | grep -i broadcast | awk '{ print $2 }' > /tmp/interface
-sed -i 's/:/\ /g' /tmp/interface
-interface=`cat /tmp/interface`
 %end
 
 %post
