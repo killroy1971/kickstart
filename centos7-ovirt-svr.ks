@@ -2,7 +2,7 @@
 # System authorization information
 auth --enableshadow --passalgo=sha512
 # Use network installation
-url --url="http://192.168.4.11:20000/centos7"
+url --url="http://192.168.4.10/centos7"
 # Use graphical install
 graphical
 # Run the Setup Agent on first boot
@@ -16,7 +16,7 @@ lang en_US.UTF-8
 # Network information
 network  --bootproto=static --device=enp0s31f6 --gateway=192.168.4.1 --ip=192.168.4.15 --nameserver=8.8.8.8,192.168.4.9 --netmask=255.255.255.0 --noipv6 --activate
 network  --bootproto=dhcp --device=enp1s0 --onboot=off --ipv6=auto
-network  --hostname=openstack.gshome.lan
+network  --hostname=ovirt.gshome.lan
 
 # Root password
 rootpw --iscrypted $6$inA/u9U63Z70z5/j$GCf7T/.SVElIjfnVbWqiZY.UJb3BoFEm2beyTHJey0lKDg14ITjg/1xjhRhemOgmA4WeCXLg2rx41VlmYUu5J.

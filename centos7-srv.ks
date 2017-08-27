@@ -2,7 +2,7 @@
 # System authorization information
 auth --enableshadow --passalgo=sha512
 # Use network installation
-url --url="http://192.168.4.11:20000/centos7"
+url --url="http://192.168.4.10/pub/os/centos7"
 # Use graphical install
 graphical
 # Run the Setup Agent on first boot
@@ -14,9 +14,7 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network  --bootproto=static --device=enp0s31f6 --gateway=192.168.4.1 --ip=192.168.4.15 --nameserver=8.8.8.8,192.168.4.9 --netmask=255.255.255.0 --noipv6 --activate
-network  --bootproto=dhcp --device=enp1s0 --onboot=off --ipv6=auto
-network  --hostname=ovirt.gshome.lan
+network  --bootproto=dhcp --device=enp1s0 --onboot=on --ipv6=auto
 
 # Root password
 rootpw --iscrypted $6$inA/u9U63Z70z5/j$GCf7T/.SVElIjfnVbWqiZY.UJb3BoFEm2beyTHJey0lKDg14ITjg/1xjhRhemOgmA4WeCXLg2rx41VlmYUu5J.
@@ -28,15 +26,15 @@ user --groups=wheel --name=glenn --password=$6$hSuMFfwAgBW3A7dZ$2v8Kj7PQxpfiqi7p
 # System bootloader configuration
 bootloader --location=mbr --boot-drive=sda
 # Partition clearing information
-clearpart --none --initlabel
+clearpart --all --initlabel
 # Disk partitioning information
+part /boot/efi --fstype="efi" --onpart=sda1 --fsoptions="umask=0077,shortname=winnt"
 part /boot --fstype="xfs" --onpart=sda2
 part pv.19 --fstype="lvmpv" --noformat --onpart=sda3
-part /boot/efi --fstype="efi" --onpart=sda1 --fsoptions="umask=0077,shortname=winnt"
-volgroup vg01 --noformat --useexisting
-logvol /home  --fstype="xfs" --noformat --useexisting --name=home --vgname=vg01
-logvol /  --fstype="xfs" --useexisting --name=root --vgname=vg01
-logvol swap  --fstype="swap" --useexisting --name=swap --vgname=vg01
+volgroup vg01 pv.19
+logvol /home --fstype="xfs" --name=home --vgname=vg01 --size=5000
+logvol swap  --fstype="swap" --name=swap --vgname=vg01 --size=2048
+logvol / --fstype="xfs" --name=root --vgname=vg01 --size=1024 --grow
 
 %packages
 @^minimal

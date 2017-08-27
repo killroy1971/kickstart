@@ -5,7 +5,7 @@ install
 authconfig --enableshadow --passalgo=sha512
 
 #Installation Source
-url --url=http://192.168.4.11:20000/centos6
+url --url=http://192.168.4.10/centos6
 
 #Text based install
 text
