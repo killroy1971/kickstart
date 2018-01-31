@@ -37,9 +37,9 @@ part /boot --fstype="xfs" --ondisk=sda --size=500
 part pv.20 --fstype="lvmpv" --ondisk=sda --size=4096 --grow
 volgroup vg01 pv.20
 logvol /  --fstype="xfs" --size=1024 --name=root --vgname=vg01
-logvol /usr  --fstype="xfs" --size=10240 --name=usr --vgname=vg01
+logvol /usr  --fstype="xfs" --size=5120  --name=usr --vgname=vg01
 logvol /opt  --fstype="xfs" --size=5120  --name=opt --vgname=vg01
-logvol /var  --fstype="xfs" --size=25600 --name=var --vgname=vg01
+logvol /var  --fstype="xfs" --size=20480 --name=var --vgname=vg01
 logvol /var/log  --fstype="xfs" --size=10240 --name=var_log --vgname=vg01
 logvol /home  --fstype="xfs" --size=2048 --name=home --vgname=vg01
 logvol /tmp  --fstype="xfs" --size=5120  --name=tmp --vgname=vg01 --fsoptions=defaults,noexec
