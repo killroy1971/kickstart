@@ -56,9 +56,17 @@ chrony
 
 %end
 
+%pre
+# change to new vt and set stout/stdin
+exec < /dev/tty6 > /dev/tty6
+chvt 6
+#Prompt user for RHN password
+read -p "Enter your RHN password:" RHNPASS /dev/tty6 2>&1
+%end
+
 %post --log=/root/post-ks.log
 #Register with RHN
-/usr/sbin/subscription-manager register --username=rhn-gps-gsnead --password=t%3KtjRJ@r2%FAm!3sXP1*
+/usr/sbin/subscription-manager register --username=rhn-gps-gsnead --password=${RHNPASS}
 /usr/sbin/subscription-manager attach --pool=8a85f98c60c2c2b40160c324e5d21d70
 /usr/sbin/subscription-manager repos --disable '*'
 /usr/sbin/subscription-manager repos --enable rhel-7-server-rpms
