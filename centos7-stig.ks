@@ -3,7 +3,7 @@
 # Use to create VMs where the hypervisor created normal disk targets: /dev/sda.
 # This script does not create a user account.  Change your rootpw entry to match
 # your personall default root password's hash.
-# This kickstart creates a 12G vg01 volume group and consumes 12G of that space.
+# Tick kickstart creates a 39G vg01 volume group and consumes 30G of that space.
 install
 text
 network --bootproto=dhcp --device=ens192 --hostname=rhel7base --ipv6=auto --activate
@@ -25,16 +25,16 @@ firstboot --enable
 services --enabled="chronyd"
 part /boot --fstype="xfs" --ondisk=sda --size=500
 part pv.123 --fstype="lvmpv" --ondisk=sda --size=4096 --grow
-volgroup vg01 --pesize=12288 pv.123
-logvol swap  --fstype="swap" --size=500 --name=swap --vgname=vg01
-logvol /var/log/audit  --fstype="xfs" --size=500 --name=var_log_audit --vgname=vg01
-logvol /var/log  --fstype="xfs" --size=1024 --name=var_log --vgname=vg01
-logvol /home  --fstype="xfs" --size=500 --name=home --vgname=vg01
+volgroup vg01 --pesize=39936 pv.123
+logvol swap  --fstype="swap" --size=4096 --name=swap --vgname=vg01
+logvol /var/log/audit  --fstype="xfs" --size=1024 --name=var_log_audit --vgname=vg01
+logvol /var/log  --fstype="xfs" --size=2048 --name=var_log --vgname=vg01
+logvol /home  --fstype="xfs" --size=3072 --name=home --vgname=vg01
 logvol /var  --fstype="xfs" --size=4096 --name=var --vgname=vg01
-logvol /  --fstype="xfs" --size=500 --name=root --vgname=vg01
-logvol /usr  --fstype="xfs" --size=4096 --name=usr --vgname=vg01
-logvol /opt  --fstype="xfs" --size=500 --name=opt --vgname=vg01
-logvol /tmp  --fstype="xfs" --size=500 --name=tmp --vgname=vg01 --fsoptions=defaults,noexec
+logvol /  --fstype="xfs" --size=1024 --name=root --vgname=vg01
+logvol /usr  --fstype="xfs" --size=10240 --name=usr --vgname=vg01
+logvol /opt  --fstype="xfs" --size=2048 --name=opt --vgname=vg01
+logvol /tmp  --fstype="xfs" --size=4096 --name=tmp --vgname=vg01 --fsoptions=defaults,noexec
 
 %packages
 @base

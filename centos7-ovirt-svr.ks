@@ -2,7 +2,7 @@
 # System authorization information
 auth --enableshadow --passalgo=sha512
 # Use network installation
-url --url="http://192.168.4.11:20000/centos7"
+url --url="http://192.168.4.10/centos7"
 # Use graphical install
 graphical
 # Run the Setup Agent on first boot
