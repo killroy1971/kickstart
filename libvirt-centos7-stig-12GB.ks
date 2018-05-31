@@ -63,9 +63,26 @@ logvol /var/log/audit  --fstype="xfs" --size=256 --name=var_log_audit --vgname=v
 logvol /usr  --fstype="xfs" --size=3072 --name=usr --vgname=vg01
 
 %packages
-@^minimal
+@base
 @core
+@compat-libraries
+crypto-utils
+screen
+tmux
+openscap
+openscap-utils
+openscap-scanner
+aide
+opencryptoki
 chrony
+curl
+mailx
+wget
+libselinux-python
+libsemanage-python
+vim
+bash-completion
+zsh
 
 %end
 

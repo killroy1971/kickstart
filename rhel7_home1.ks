@@ -14,8 +14,8 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network  --bootproto=static --ip=192.168.4.20 --netmask=255.255.255.0 --gateway=192.168.4.1 --nameserver=192.168.4.10,208.67.222.222 --device=eth0 --ipv6=ignore --activate
-network  --hostname=bastion.gshome.lan
+network  --bootproto=static --ip=192.168.4.10 --netmask=255.255.255.0 --gateway=192.168.4.1 --nameserver=192.168.4.1,208.67.222.222 --device=eth0 --ipv6=ignore --activate
+network  --hostname=home1.gshome.lan
 
 # Root password
 rootpw --iscrypted $6$mrnfsiubvMDMK8CV$CyouEe9J.wdAErICvJxDsWx1xWgTM0IPUf5/Gd1f6JVoiePVs0hMG9IJ7xjdyALoe50sLzbQB6am6vJVpSYoZ0
@@ -39,10 +39,10 @@ part pv.123 --fstype="lvmpv" --ondisk=sda --size=4096 --grow
 volgroup vg01 pv.123 
 logvol swap  --fstype="swap" --size=2048 --name=swap --vgname=vg01
 logvol /var  --fstype="xfs" --size=10000 --name=var --vgname=vg01
-logvol /var/log/audit  --fstype="xfs" --size=5000 --name=log_audit --vgname=vg01
-logvol /var/log  --fstype="xfs" --size=5000 --name=log --vgname=vg01
+logvol /var/log/audit  --fstype="xfs" --size=5000 --name=var_log_audit --vgname=vg01
+logvol /var/log  --fstype="xfs" --size=10000 --name=var_log --vgname=vg01
 logvol /  --fstype="xfs" --size=1024 --name=root --vgname=vg01
-logvol /tmp  --fstype="xfs" --size=2048 --name=tmp --vgname=vg01 --fsoptions=defaults,noexec
+logvol /tmp  --fstype="xfs" --size=5000 --name=tmp --vgname=vg01 --fsoptions=defaults,noexec
 logvol /home  --fstype="xfs" --size=5000 --name=home --vgname=vg01
 logvol /usr  --fstype="xfs" --size=5000 --name=usr --vgname=vg01
 logvol /opt  --fstype="xfs" --size=5000 --name=opt --vgname=vg01
@@ -68,6 +68,12 @@ openscap-scanner
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'
 
+%end
+
+%pre 
+ip addr | grep -i broadcast | awk '{ print $2 }' > /tmp/interface
+sed -i 's/:/\ /g' /tmp/interface
+interface=`cat /tmp/interface`
 %end
 
 %anaconda

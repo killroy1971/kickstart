@@ -38,24 +38,26 @@ logvol /tmp  --fstype="xfs" --size=4096 --name=tmp --vgname=vg01 --fsoptions=def
 
 %packages
 @base
-@compat-libraries
 @core
-@hardware-monitoring
-@performance
-@remote-system-management
-@smart-card
+@compat-libraries
+crypto-utils
+screen
+tmux
+openscap
+openscap-utils
+openscap-scanner
 aide
+opencryptoki
 chrony
-open-vm-tools
-ntp
 curl
 mailx
-audispd-plugins
-perl
 wget
-rhn-setup
-rhn-check
-rhn-client-tools
+libselinux-python
+libsemanage-python
+vim
+bash-completion
+zsh
+
 %end
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'

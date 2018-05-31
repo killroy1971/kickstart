@@ -39,7 +39,16 @@ logvol /  --fstype="xfs" --useexisting --name=root --vgname=vg01
 %packages
 @^minimal
 @core
+aide
 chrony
+curl
+mailx
+wget
+libselinux-python
+libsemanage-python
+vim
+bash-completion
+zsh
 
 %end
 

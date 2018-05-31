@@ -42,6 +42,7 @@ logvol /tmp  --fstype="xfs" --size=500 --name=tmp --vgname=vg01 --fsoptions=defa
 @compat-libraries
 crypto-utils
 screen
+tmux
 openscap
 openscap-utils
 openscap-scanner
@@ -51,6 +52,11 @@ chrony
 curl
 mailx
 wget
+libselinux-python
+libsemanage-python
+vim
+bash-completion
+zsh
 
 %end
 

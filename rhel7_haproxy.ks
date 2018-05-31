@@ -56,9 +56,13 @@ curl
 mailx
 wget
 libselinux-python
+libsemanage-python
 vim
 bash-completion
 zsh
+openscap
+openscap-utils
+openscap-scanner
 
 %end
 

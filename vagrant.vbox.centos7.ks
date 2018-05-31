@@ -43,7 +43,24 @@ logvol swap --fstype="swap" --name=swap --vgname=vg01 --size=512
 logvol / --fstype="xfs" --name=root --vgname=vg01 --size=1024 --grow
 
 %packages
+%packages
+@^minimal
 @core
+aide
+chrony
+curl
+mailx
+wget
+libselinux-python
+libsemanage-python
+vim
+bash-completion
+zsh
+openscap
+openscap-utils
+openscap-scanner
+
+%end
 
 %end
 

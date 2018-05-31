@@ -48,7 +48,19 @@ logvol /tmp  --fstype="xfs" --size=10240 --name=tmp --vgname=vg01
 %packages
 @^minimal
 @core
+aide
 chrony
+curl
+mailx
+wget
+libselinux-python
+libsemanage-python
+vim
+bash-completion
+zsh
+openscap
+openscap-utils
+openscap-scanner
 
 %end
 

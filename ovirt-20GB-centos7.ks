@@ -37,11 +37,17 @@ logvol /tmp  --fstype="xfs" --size=4000 --name=tmp --vgname=vg01 --fsoptions=def
 @base
 @compat-libraries
 @core
-@smart-card
 aide
+curl
 chrony
+screen
+tmux
+openscap
+openscap-utils
+openscap-scanner
 ntp
 libselinux-python
+libsemanage-python
 firewalld
 vim
 git
@@ -51,6 +57,10 @@ audispd-plugins
 python
 wget
 parted
+opencryptoki
+vim
+bash-completion
+zsh
 %end
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'

@@ -14,7 +14,7 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-network  --bootproto=static --ip=192.168.4.19 --netmask=255.255.255.0 --gateway=192.168.4.1 --nameserver=192.168.4.10,208.67.222.222 --device=eth0 --ipv6=ignore --activate
+network  --bootproto=static --ip=192.168.4.19 --netmask=255.255.255.0 --gateway=192.168.4.1 --nameserver=192.168.4.1,208.67.222.222 --device=eth0 --ipv6=ignore --activate
 network  --hostname=satellite.gshome.lan
 
 # Root password
@@ -56,9 +56,13 @@ curl
 mailx
 wget
 libselinux-python
+libsemanage-python
 vim
 bash-completion
 zsh
+openscap
+openscap-utils
+openscap-scanner
 
 %end
 

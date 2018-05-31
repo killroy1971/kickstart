@@ -35,13 +35,36 @@ bootloader --location=mbr --append="crashkernel=auto rhgb quiet"
 reboot
 
 # Package Selection
-%packages --nobase
+%packages
+@base
+@compat-libraries
 @core
-wget
-sudo
-perl
+aide
+curl
+chrony
+screen
+tmux
+openscap
+openscap-utils
+openscap-scanner
+ntp
+libselinux-python
+libsemanage-python
+firewalld
+vim
 git
+curl
+mailx
+audispd-plugins
+python
+wget
+parted
+opencryptoki
+vim
+bash-completion
+zsh
 
+%end
 
 %pre
 
