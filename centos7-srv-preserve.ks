@@ -39,6 +39,7 @@ logvol /  --fstype="xfs" --useexisting --name=root --vgname=vg01
 %packages
 @^minimal
 @core
+<<<<<<< HEAD
 aide
 chrony
 curl
@@ -49,6 +50,9 @@ libsemanage-python
 vim
 bash-completion
 zsh
+=======
+chrony
+>>>>>>> 07df6a89f781311469c48e1b70f8c17f9d253914
 
 %end
 

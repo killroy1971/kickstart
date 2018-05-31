@@ -1,17 +1,22 @@
 #version=DEVEL
 # System authorization information
 auth --enableshadow --passalgo=sha512
+
 # Use network installation
 url --url="http://192.168.4.10/pub/os/rhel7.4"
 repo --name="Server-HighAvailability" --baseurl=http://192.168.4.10/pub/os/rhel7.4/addons/HighAvailability
 repo --name="Server-ResilientStorage" --baseurl=http://192.168.4.10/pub/os/rhel7.4/addons/ResilientStorage
+
 # Use graphical install
 graphical
+
 # Run the Setup Agent on first boot
 firstboot --enable
 ignoredisk --only-use=sda
+
 # Keyboard layouts
 keyboard --vckeymap=us --xlayouts='us'
+
 # System language
 lang en_US.UTF-8
 
@@ -22,15 +27,21 @@ network  --hostname=rhev.gshome.lan
 
 # Root password
 rootpw --iscrypted $6$4WlXWoWDC9Rp.HY8$ymyikwA1.KhDEgkJ052gOzhnAh/BUw8rQUvojjC/7vb28XAAdjVWgXHOGVvk0x7uC2lsEfO8BRdHPJxqWljtx0
+
 # System services
 services --enabled="chronyd"
+
 # System timezone
 timezone America/New_York --isUtc
+
 user --groups=wheel --name=glenn --password=$6$IcueQHHP7.fvLR/e$3DG8NUDH.V9w3m9Q3gCNGlnCRvf37KJXiPDAm/tO3GRtjo37q2oUgAOFO9bIu0A5RqKFSMp5QFKU9X.spmHVk. --iscrypted --gecos="Glenn H. Snead"
+
 # System bootloader configuration
 bootloader --location=mbr --boot-drive=sda
+
 # Partition clearing information
 clearpart --none --initlabel
+
 # Disk partitioning information
 part pv.20 --fstype="lvmpv" --noformat --onpart=sda3
 part /boot/efi --fstype="efi" --onpart=sda1 --fsoptions="umask=0077,shortname=winnt"
