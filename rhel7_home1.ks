@@ -35,7 +35,7 @@ bootloader --location=mbr --boot-drive=sda
 #autopart --type=lvm
 # Partition clearing information
 part /boot --fstype="xfs" --ondisk=sda --size=500
-part pv.123 --fstype="lvmpv" --ondisk=sda --size=4096 --grow
+part pv.123 --fstype="lvmpv" --ondisk=sda --size=60000
 volgroup vg01 pv.123 
 logvol swap  --fstype="swap" --size=2048 --name=swap --vgname=vg01
 logvol /var  --fstype="xfs" --size=10000 --name=var --vgname=vg01
