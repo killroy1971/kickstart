@@ -12,6 +12,8 @@ ignoredisk --only-use=sda
 keyboard --vckeymap=us --xlayouts='us'
 # System language
 lang en_US.UTF-8
+# Shutdown when complete
+halt
 
 # Network information
 network  --bootproto=static --ip=192.168.4.25 --netmask=255.255.255.0 --gateway=192.168.4.1 --nameserver=192.168.4.10,208.67.222.222 --device=eth0 --ipv6=ignore --activate
