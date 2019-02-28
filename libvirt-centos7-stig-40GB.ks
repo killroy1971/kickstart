@@ -49,18 +49,18 @@ bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=vda
 ignoredisk --only-use=vda
 
 # Disk partitioning information
-part /boot --fstype="xfs" --ondisk=vda --size=256
+part /boot --fstype="xfs" --ondisk=vda --size=256 --fsoptions=defaults,nodev,noexec,nosuid
 part pv.235 --fstype="lvmpv" --ondisk=vda --size=4096 --grow
 volgroup vg01 --pesize=39000 pv.235 
 logvol swap  --fstype="swap" --size=1024 --name=swap --vgname=vg01
-logvol /var  --fstype="xfs" --size=10000 --name=var --vgname=vg01
-logvol /tmp  --fstype="xfs" --size=4096 --name=tmp --vgname=vg01
 logvol /  --fstype="xfs" --size=500 --name=root --vgname=vg01
-logvol /home  --fstype="xfs" --size=256 --name=home --vgname=vg01
-logvol /var/log  --fstype="xfs" --size=1024 --name=var_log --vgname=vg01
-logvol /opt  --fstype="xfs" --size=2096 --name=opt --vgname=vg01
-logvol /var/log/audit  --fstype="xfs" --size=1024 --name=var_log_audit --vgname=vg01
-logvol /usr  --fstype="xfs" --size=4096 --name=usr --vgname=vg01
+logvol /usr  --fstype="xfs" --size=2048 --name=usr --vgname=vg01
+logvol /opt  --fstype="xfs" --size=2048 --name=opt --vgname=vg01
+logvol /tmp  --fstype="xfs" --size=2048 --name=tmp --vgname=vg01 --fsoptions=defaults,nodev,noexec,nosuid
+logvol /home  --fstype="xfs" --size=500 --name=home --vgname=vg01 --fsoptions=defaults,nodev,noexec,nosuid
+logvol /var  --fstype="xfs" --size=5120 --name=var --vgname=vg01 --fsoptions=defaults,nodev,noexec,nosuid
+logvol /var/log  --fstype="xfs" --size=1024 --name=var_log --vgname=vg01 --fsoptions=defaults,nodev,noexec,nosuid
+logvol /var/log/audit  --fstype="xfs" --size=500 --name=var_log_audit --vgname=vg01 --fsoptions=defaults,nodev,noexec,nosuid
 
 %packages
 @base

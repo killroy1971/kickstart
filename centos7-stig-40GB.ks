@@ -26,15 +26,15 @@ services --enabled="chronyd"
 part /boot --fstype="xfs" --ondisk=sda --size=500
 part pv.123 --fstype="lvmpv" --ondisk=sda --size=4096 --grow
 volgroup vg01 --pesize=39936 pv.123
-logvol swap  --fstype="swap" --size=4096 --name=swap --vgname=vg01
-logvol /var/log/audit  --fstype="xfs" --size=1024 --name=var_log_audit --vgname=vg01
-logvol /var/log  --fstype="xfs" --size=2048 --name=var_log --vgname=vg01
-logvol /home  --fstype="xfs" --size=3072 --name=home --vgname=vg01
-logvol /var  --fstype="xfs" --size=4096 --name=var --vgname=vg01
+logvol swap  --fstype="swap" --size=2048 --name=swap --vgname=vg01
+logvol /var/log/audit  --fstype="xfs" --size=1024 --name=var_log_audit --vgname=vg01 --fsoptions=defaults,noexec,nosuid,nodev
+logvol /var/log  --fstype="xfs" --size=2048 --name=var_log --vgname=vg01 --fsoptions=defaults,noexec,nosuid,nodev
+logvol /home  --fstype="xfs" --size=1024 --name=home --vgname=vg01 --fsoptions=defaults,noexec,nosuid,nodev
+logvol /var  --fstype="xfs" --size=4096 --name=var --vgname=vg01 --fsoptions=defaults,noexec,nosuid,nodev
 logvol /  --fstype="xfs" --size=1024 --name=root --vgname=vg01
-logvol /usr  --fstype="xfs" --size=10240 --name=usr --vgname=vg01
+logvol /usr  --fstype="xfs" --size=4096 --name=usr --vgname=vg01
 logvol /opt  --fstype="xfs" --size=2048 --name=opt --vgname=vg01
-logvol /tmp  --fstype="xfs" --size=4096 --name=tmp --vgname=vg01 --fsoptions=defaults,noexec
+logvol /tmp  --fstype="xfs" --size=4096 --name=tmp --vgname=vg01 --fsoptions=defaults,noexec,nosuid,nodev
 
 %packages
 @base

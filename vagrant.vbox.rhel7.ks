@@ -4,7 +4,8 @@
 auth --enableshadow --passalgo=sha512
 
 # Installation Source
-url --url http://192.168.4.14/pub/os/rhel7.4/
+#url --url http://192.168.4.14/pub/os/rhel7.4/
+cdrom
 
 # Use text install
 text
@@ -34,16 +35,38 @@ user --name=vagrant --gecos="vagrant"
 clearpart --all --initlabel 
 
 # System bootloader configuration
-# autopart --type=lvm
+clearpart --all --initlabel
 bootloader --location=mbr --boot-drive=sda
-part /boot --fstype="xfs" --ondisk=sda --size=512
-part pv.17 --fstype="lvmpv" --ondisk=sda --size=1 --grow
-volgroup vg01 pv.17  
-logvol swap --fstype="swap" --name=swap --vgname=vg01 --size=512
-logvol / --fstype="xfs" --name=root --vgname=vg01 --size=1024 --grow
+#autopart --type=lvm
+# Partition clearing information
+part /boot --fstype="xfs" --ondisk=sda --size=500
+part pv.123 --fstype="lvmpv" --ondisk=sda --size=4096 --grow
+volgroup vg01 pv.123
+logvol swap  --fstype="swap" --size=2048 --name=swap --vgname=vg01
+logvol /var  --fstype="xfs" --size=10000 --name=var --vgname=vg01
+logvol /var/log/audit  --fstype="xfs" --size=5000 --name=var_log_audit --vgname=vg01
+logvol /var/log  --fstype="xfs" --size=5000 --name=var_log --vgname=vg01
+logvol /  --fstype="xfs" --size=1024 --name=root --vgname=vg01
+logvol /tmp  --fstype="xfs" --size=2048 --name=tmp --vgname=vg01 --fsoptions=defaults,noexec
+logvol /home  --fstype="xfs" --size=5000 --name=home --vgname=vg01
+logvol /usr  --fstype="xfs" --size=5000 --name=usr --vgname=vg01
+logvol /opt  --fstype="xfs" --size=5000 --name=opt --vgname=vg01
 
 %packages
 @core
+aide
+chrony
+curl
+mailx
+wget
+libselinux-python
+libsemanage-python
+vim
+bash-completion
+zsh
+openscap
+openscap-utils
+openscap-scanner
 
 %end
 
