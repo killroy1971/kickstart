@@ -16,11 +16,7 @@ lang en_US.UTF-8
 halt
 
 # Network information - static
-network  --bootproto=static --ip=192.168.4.210 --netmask=255.255.255.0 --gateway=192.168.4.1 --nameserver=192.168.4.1,208.67.222.222 --device=$interface --ipv6=ignore --activate
-network  --hostname=rhel74.gshome.lan
-
-# Network information - dhcp
-network  --bootproto=dhcp --device=$interface --ipv6=ignore --activate
+network  --bootproto=static --ip=$IPADDR --netmask=255.255.255.0 --gateway=$GATEWAY --nameserver=$DNSSVR --device=$interface --ipv6=ignore --activate
 network  --hostname=$SYSNAME
 
 # Root password
@@ -97,6 +93,10 @@ exec < /dev/tty6 > /dev/tty6
 chvt 6
 #Prompt for hostname
 read -p "Enter the desired hostname:" SYSNAME /dev/tty6 2>&1
+#Prompt for network address
+read -p "Enter the system's ip address:" IPADDR /dev/tty6 2>&1
+read -p "Enter the system's default gateway:" GATEWAY /dev/tty6 2>&1
+read -p "Enter the system's dhcp servers in <ipaddr>,<ipaddr> format:" DNSSVR /dev/tty6 2>&1
 %end
 
 %post --log=/root/post-ks.log

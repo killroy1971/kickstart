@@ -7,17 +7,13 @@ cdrom
 text
 # Run the Setup Agent on first boot
 firstboot --enable
-ignoredisk --only-use=sda
+ignoredisk --only-use=vda
 # Keyboard layouts
 keyboard --vckeymap=us --xlayouts='us'
 # System language
 lang en_US.UTF-8
 # Shutdown when complete
 halt
-
-# Network information - static
-network  --bootproto=static --ip=192.168.4.210 --netmask=255.255.255.0 --gateway=192.168.4.1 --nameserver=192.168.4.1,208.67.222.222 --device=$interface --ipv6=ignore --activate
-network  --hostname=rhel74.gshome.lan
 
 # Network information - dhcp
 network  --bootproto=dhcp --device=$interface --ipv6=ignore --activate
@@ -53,10 +49,6 @@ logvol /tmp  --fstype="xfs" --size=5000 --name=tmp --vgname=vg01 --fsoptions=def
 logvol /home  --fstype="xfs" --size=5000 --name=home --vgname=vg01
 logvol /usr  --fstype="xfs" --size=10000 --name=usr --vgname=vg01
 logvol /opt  --fstype="xfs" --size=10000 --name=opt --vgname=vg01
-
-# System bootloader configuration - auto file system layout
-bootloader --location=mbr --boot-drive=sda
-autopart --type=lvm
 
 %packages
 @^minimal
