@@ -16,8 +16,8 @@ lang en_US.UTF-8
 halt
 
 # Network information - static
-network  --bootproto=static --ip=$IPADDR --netmask=255.255.255.0 --gateway=$GATEWAY --nameserver=$DNSSVR --device=$interface --ipv6=ignore --activate
-network  --hostname=$SYSNAME
+network  --bootproto=static --ip=192.168.4.37 --netmask=255.255.255.0 --gateway=192.168.4.1 --nameserver=192.168.4.22 --device=$interface --ipv6=ignore --activate
+network  --hostname="sat-test.gshome.lan"
 
 # Root password
 rootpw --iscrypted $6$mrnfsiubvMDMK8CV$CyouEe9J.wdAErICvJxDsWx1xWgTM0IPUf5/Gd1f6JVoiePVs0hMG9IJ7xjdyALoe50sLzbQB6am6vJVpSYoZ0
@@ -33,11 +33,11 @@ user --groups=wheel --name=glenn-adm --password=$6$7kZGDpNzm6C50Qz0$uZUkbcqxtzJM
 
 # System bootloader configuration - 100 GB primary partition, erase existing partitions
 clearpart --all --initlabel
-bootloader --location=mbr --boot-drive=sda
+bootloader --location=mbr --boot-drive=vda
 #autopart --type=lvm
 # Partition clearing information
-part /boot --fstype="xfs" --ondisk=sda --size=1024
-part pv.123 --fstype="lvmpv" --ondisk=sda --size=4096 --grow
+part /boot --fstype="xfs" --ondisk=vda --size=1024
+part pv.123 --fstype="lvmpv" --ondisk=vda --size=4096 --grow
 volgroup vg01 pv.123 
 logvol swap  --fstype="swap" --size=2048 --name=swap --vgname=vg01
 logvol /var  --fstype="xfs" --size=10000 --name=var --vgname=vg01
@@ -51,7 +51,7 @@ logvol /usr  --fstype="xfs" --size=10000 --name=usr --vgname=vg01
 logvol /opt  --fstype="xfs" --size=10000 --name=opt --vgname=vg01
 
 # System bootloader configuration - auto file system layout
-bootloader --location=mbr --boot-drive=sda
+bootloader --location=mbr --boot-drive=vda
 autopart --type=lvm
 
 %packages
@@ -88,15 +88,6 @@ pwpolicy luks --minlen=6 --minquality=50 --notstrict --nochanges --notempty
 ip addr | grep -i broadcast | awk '{ print $2 }' > /tmp/interface
 sed -i 's/:/\ /g' /tmp/interface
 interface=`cat /tmp/interface`
-# change to new vt and set stout/stdin
-exec < /dev/tty6 > /dev/tty6
-chvt 6
-#Prompt for hostname
-read -p "Enter the desired hostname:" SYSNAME /dev/tty6 2>&1
-#Prompt for network address
-read -p "Enter the system's ip address:" IPADDR /dev/tty6 2>&1
-read -p "Enter the system's default gateway:" GATEWAY /dev/tty6 2>&1
-read -p "Enter the system's dhcp servers in <ipaddr>,<ipaddr> format:" DNSSVR /dev/tty6 2>&1
 %end
 
 %post --log=/root/post-ks.log
